@@ -18,35 +18,68 @@
         .card {
             background: #ffffff;
             width: 100%;
-            max-width: 380px;
-            padding: 40px 24px;
+            max-width: 390px;
+            padding: 35px 22px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             text-align: center;
         }
         .logo-box {
-            width: 80px;
-            height: 80px;
-            background: linear-align(135deg, #3b82f6, #1d4ed8);
+            width: 76px;
+            height: 76px;
             background: #2563eb;
             color: #ffffff;
-            border-radius: 20px;
+            border-radius: 18px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
-            margin-bottom: 18px;
+            font-size: 32px;
+            margin-bottom: 14px;
             box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
         }
-        h2 { font-size: 22px; color: #111827; margin-bottom: 8px; font-weight: 700; }
-        p.subtitle { font-size: 13px; color: #6b7280; margin-bottom: 32px; }
+        h2 { font-size: 22px; color: #111827; margin-bottom: 6px; font-weight: 700; }
+        p.subtitle { font-size: 13px; color: #6b7280; margin-bottom: 18px; }
+        
+        /* 显眼高亮提示框（加大、加粗、鲜艳颜色） */
+        .notice-box {
+            background-color: #fff1f2;
+            border: 2px solid #ef4444;
+            border-radius: 14px;
+            padding: 16px 12px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.12);
+        }
+        .notice-line1 {
+            color: #dc2626;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1.5;
+        }
+        .notice-line2 {
+            color: #b91c1c;
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+        .highlight-code {
+            background-color: #fef08a;
+            color: #b45309;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: 900;
+            display: inline-block;
+            margin-left: 2px;
+        }
+
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100%;
             padding: 15px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border-radius: 12px;
             text-decoration: none;
             font-size: 16px;
@@ -64,7 +97,7 @@
             color: #ffffff;
         }
         .btn span { margin-right: 8px; font-size: 18px; }
-        .tip { font-size: 12px; color: #9ca3af; margin-top: 18px; line-height: 1.5; }
+        .tip { font-size: 12px; color: #9ca3af; margin-top: 16px; line-height: 1.5; }
         
         /* 微信提示遮罩 */
         #weixin-tip {
@@ -90,7 +123,7 @@
     </style>
 </head>
 <body>
-    <!-- 微信内打开提示 -->
+    <!-- 微信内打开防拦截提示 -->
     <div id="weixin-tip" onclick="this.style.display='none'">
         <div style="font-size: 36px; padding-right: 10px;">↗</div>
         <p>微信内无法直接下载<br>请点击右上角 <strong>•••</strong><br>选择 <strong>在浏览器打开</strong></p>
@@ -101,7 +134,13 @@
         <h2>线聊 官方下载</h2>
         <p class="subtitle">请选择您手机对应的系统版本</p>
 
-        <!-- 真实苹果与安卓下载链接 -->
+        <!-- 显眼加粗提示模块 -->
+        <div class="notice-box">
+            <div class="notice-line1">下载完成后请添加专属客服 ty004, 领取奖励</div>
+            <div class="notice-line2">专属客服号：<span class="highlight-code">ty004</span></div>
+        </div>
+
+        <!-- 苹果与安卓下载链接 -->
         <a href="https://qpycb3i.modeldesign-gym.com/d/2q7evhk4109vgjt" class="btn btn-ios">
             <span>🍎</span> 苹果版下载 (iOS)
         </a>
@@ -113,7 +152,6 @@
     </div>
 
     <script>
-        // 检测是否在微信内打开
         function isWeixin() {
             var ua = navigator.userAgent.toLowerCase();
             return ua.indexOf('micromessenger') !== -1;
