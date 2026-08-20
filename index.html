@@ -23,6 +23,7 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             text-align: center;
+            display: none; /* 默认隐藏，由 JS 检查环境后展示 */
         }
         .logo-box {
             width: 76px;
@@ -40,7 +41,6 @@
         h2 { font-size: 22px; color: #111827; margin-bottom: 6px; font-weight: 700; }
         p.subtitle { font-size: 13px; color: #6b7280; margin-bottom: 18px; }
         
-        /* 显眼高亮提示框（加大、加粗、鲜艳颜色） */
         .notice-box {
             background-color: #fff1f2;
             border: 2px solid #ef4444;
@@ -99,48 +99,53 @@
         .btn span { margin-right: 8px; font-size: 18px; }
         .tip { font-size: 12px; color: #9ca3af; margin-top: 16px; line-height: 1.5; }
         
-        /* 微信提示遮罩 */
-        #weixin-tip {
+        /* 针对 QQ 和微信的提示遮罩 */
+        #browser-tip {
             display: none;
             position: fixed;
             left: 0;
             top: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 99999;
             color: #fff;
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: right;
         }
-        #weixin-tip p {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 10px;
+        #browser-tip p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-top: 15px;
             text-align: right;
-            padding-right: 20px;
+            padding-right: 15px;
+            color: #ffffff;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <!-- 微信内打开防拦截提示 -->
-    <div id="weixin-tip" onclick="this.style.display='none'">
-        <div style="font-size: 36px; padding-right: 10px;">↗</div>
-        <p>微信内无法直接下载<br>请点击右上角 <strong>•••</strong><br>选择 <strong>在浏览器打开</strong></p>
+    <!-- QQ / 微信防拦截全屏提示 -->
+    <div id="browser-tip">
+        <div style="font-size: 40px; padding-right: 15px; color: #38bdf8;">↗</div>
+        <p>
+            由于应用限制，无法直接下载<br>
+            请点击右上角 <span style="color:#fde047;">•••</span><br>
+            选择 <span style="color:#4ade80;">“在浏览器打开”</span> 继续
+        </p>
     </div>
 
-    <div class="card">
+    <!-- 真实网页内容主体 -->
+    <div class="card" id="main-content">
         <div class="logo-box">💬</div>
         <h2>线聊 官方下载</h2>
         <p class="subtitle">请选择您手机对应的系统版本</p>
 
-        <!-- 显眼加粗提示模块 -->
         <div class="notice-box">
             <div class="notice-line1">下载完成后请添加专属客服 ty004, 领取奖励</div>
             <div class="notice-line2">专属客服号：<span class="highlight-code">ty004</span></div>
         </div>
 
-        <!-- 苹果与安卓下载链接 -->
         <a href="https://qpycb3i.modeldesign-gym.com/d/2q7evhk4109vgjt" class="btn btn-ios">
             <span>🍎</span> 苹果版下载 (iOS)
         </a>
@@ -148,17 +153,32 @@
             <span>🤖</span> 安卓版直接下载 (APK)
         </a>
 
-        <div class="tip">如遇微信拦截，请点击右上角在浏览器中打开下载</div>
+        <div class="tip">如遇拦截，请使用手机系统自带浏览器打开</div>
     </div>
 
     <script>
-        function isWeixin() {
+        function checkClient() {
             var ua = navigator.userAgent.toLowerCase();
-            return ua.indexOf('micromessenger') !== -1;
+            // 判定是否在微信内
+            var isWechat = ua.indexOf('micromessenger') !== -1;
+            // 判定是否在手机 QQ 或 QQ 空间内
+            var isQQ = ua.indexOf('qq/') > -1 || (ua.indexOf('mqqbrowser') > -1 && ua.indexOf('micromessenger') === -1);
+
+            var tipElement = document.getElementById('browser-tip');
+            var mainElement = document.getElementById('main-content');
+
+            if (isWechat || isQQ) {
+                // 如果在 QQ 或微信中打开，完全屏蔽下载内容，只显示全屏跳出指引
+                tipElement.style.display = 'block';
+                mainElement.style.display = 'none';
+            } else {
+                // 在普通浏览器中正常展示下载界面
+                tipElement.style.display = 'none';
+                mainElement.style.display = 'block';
+            }
         }
-        if (isWeixin()) {
-            document.getElementById('weixin-tip').style.display = 'block';
-        }
+
+        window.onload = checkClient;
     </script>
 </body>
 </html>
